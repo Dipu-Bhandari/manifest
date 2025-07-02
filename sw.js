@@ -1,7 +1,10 @@
 const CACHE_NAME = 'dbs-amguri-v1';
-const urlsToCache = ['/', '/manifest.json', '/offline.html'];
+const urlsToCache = [
+  '/',
+  '/manifest.json',
+  // You can add other essential static files here, like CSS or icons
+];
 
-// Install event: cache essential assets and activate immediately
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
@@ -10,38 +13,33 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate event: clean up old caches and take control of clients
 self.addEventListener('activate', event => {
   clients.claim();
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
       )
     )
   );
 });
 
-// Fetch event: handle navigation and resource requests
 self.addEventListener('fetch', event => {
   const request = event.request;
   const url = new URL(request.url);
 
-  // Navigation requests within the PWA origin
-  if (request.mode === 'navigate' && url.origin === self.location.origin) {
-    event.respondWith(
-      fetch(request)
-        .then(response => response)
-        .catch(() => caches.match('/offline.html'))
-    );
-    return;
-  }
-
-  // Other requests: try cache first, then network
+  // Try to serve from cache, fall back to network, fallback to nothing
   event.respondWith(
-    caches.match(request)
-      .then(cachedResponse => cachedResponse || fetch(request))
+    caches.match(request).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(request).catch(() => {
+        // Optional: you can add offline fallback for navigations only
+        if (request.mode === 'navigate') {
+          return caches.match('/');
+        }
+      });
+    })
   );
 });
