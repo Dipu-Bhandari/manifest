@@ -1,7 +1,7 @@
 {
   "name": "DBS AMGURI",
   "short_name": "DBS",
-  "description": "DBS AMGURI - Your trusted source for news, updates and information",
+  "description": "DBS AMGURI",
   "start_url": "/",
   "display": "Standalone",
   "orientation": "portrait-primary",
