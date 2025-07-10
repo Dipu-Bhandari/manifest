@@ -1,12 +1,20 @@
 const CACHE_NAME = 'dbs-amguri-v2'; // bump version when cache changes
 const urlsToCache = [
-  '/',
-  '/manifest.json',
-  '/index.html',
-  '/styles/main.css',
-  '/scripts/main.js',
-  '/images/logo.png',
-  // Add other static resources here
+  '/',                     // Homepage (desktop)
+  '/?m=1',                 // Homepage (mobile)
+  '/p/about.html',
+  '/p/contact.html',
+  '/p/chat.html',
+  '/offline.html',         // Optional: custom offline fallback page
+
+  // PWA manifest hosted on GitHub
+  'https://raw.githubusercontent.com/Dipu-Bhandari/manifest/refs/heads/main/manifest.json',
+
+  // Logo used in PWA and meta tags
+  'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgf9zNHbEv3KkOhNNaVMwg8iPTY2y9K3lEzsD4vMifAooOUd-Srz9cba8Tv64OVqRxLvMb4pKTuAMAvGXAz8hlp97jjcTBnXgaO_WKK8H4nXQ0nI4wkvPZxJ_NTtXXrDdclY1aD2yzmtoSKZC2OOMxkYy3_paLEvqPP16iQHX87LG5rtEN2tUO2H_AMAFg/s192-rw/Black%20Clean%20Minimalist%20Circle%20Monogram%20Logo%20(1).png',
+
+  // Bootstrap CSS (loaded from CDN)
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
 ];
 
 // Precache known static assets
